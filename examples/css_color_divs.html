@@ -103,17 +103,34 @@ function init() {
 
   var animatedDiv = document.getElementById("myDiv0");
   if (animatedDiv) {
-    var hue = 0;
-    function animate() {
-      hue = (hue + 1) % 360;
-      animatedDiv.style.backgroundColor = "hsl(" + hue + ", 70%, 80%)";
-      requestAnimationFrame(animate);
-    }
-    requestAnimationFrame(animate);
-
     // Bring the animated div to the front. Otherwise, due to the overlapping
     // nature of the grid, it gets completely buried by div #2, #3, etc.
     animatedDiv.style.position = "relative";
+    animatedDiv.style.zIndex = "1";
+
+    var animatedDiv2 = animatedDiv.cloneNode(true);
+    animatedDiv2.id = "myDiv0_2";
+    animatedDiv2.style.position = "absolute";
+    animatedDiv2.style.left = animatedDiv.offsetLeft + "px";
+    animatedDiv2.style.top = animatedDiv.offsetTop + "px";
+    animatedDiv2.style.margin = "0";
+    animatedDiv2.style.backgroundColor = "hsl(180, 70%, 80%)";
+    animatedDiv2.style.zIndex = "1";
+    document.getElementById('body').appendChild(animatedDiv2);
+
+    var showFirst = true;
+    function animate() {
+      if (showFirst) {
+        animatedDiv.style.visibility = "visible";
+        animatedDiv2.style.visibility = "hidden";
+      } else {
+        animatedDiv.style.visibility = "hidden";
+        animatedDiv2.style.visibility = "visible";
+      }
+      showFirst = !showFirst;
+      requestAnimationFrame(animate);
+    }
+    requestAnimationFrame(animate);
   }
 }
 
