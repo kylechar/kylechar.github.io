@@ -81,6 +81,7 @@ function init() {
   var visible_layers = qs['visible_layers'] ? parseInt(qs['visible_layers']) : -1;
 
   for (var i = 0; i < layer_count; i ++) {
+    var hue = Math.floor(Math.random() * 360);
     if (i == visible_layers) {
       var paddingDiv = body.appendChild(document.createElement('div'));
       paddingDiv.className = 'padding_quad';
@@ -95,7 +96,7 @@ function init() {
     div.style.height = layer_size + 'px';
 
     // Assign a random pastel background color
-    div.style.backgroundColor = "hsl(" + Math.floor(Math.random() * 360) + ", 70%, 80%)";
+    div.style.backgroundColor = "hsl(" + hue + ", 70%, 80%)";
 
     var number = div.appendChild(document.createElement('p'));
     number.textContent = i + 1;
@@ -114,18 +115,18 @@ function init() {
     animatedDiv2.style.left = animatedDiv.offsetLeft + "px";
     animatedDiv2.style.top = animatedDiv.offsetTop + "px";
     animatedDiv2.style.margin = "0";
-    animatedDiv2.style.backgroundColor = "hsl(180, 70%, 80%)";
+    animatedDiv2.style.backgroundColor = "hsl(" + hue + ", 70%, 60%)";
     animatedDiv2.style.zIndex = "1";
     document.getElementById('body').appendChild(animatedDiv2);
 
     var showFirst = true;
     function animate() {
       if (showFirst) {
-        animatedDiv.style.visibility = "visible";
-        animatedDiv2.style.visibility = "hidden";
+        animatedDiv.style.zIndex = "2";
+        animatedDiv2.style.zIndex = "1";
       } else {
-        animatedDiv.style.visibility = "hidden";
-        animatedDiv2.style.visibility = "visible";
+        animatedDiv.style.zIndex = "1";
+        animatedDiv2.style.zIndex = "2";
       }
       showFirst = !showFirst;
       requestAnimationFrame(animate);
