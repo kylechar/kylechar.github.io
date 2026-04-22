@@ -116,39 +116,16 @@ function init() {
     animatedDiv.style.position = "relative";
     animatedDiv.style.zIndex = "1";
 
-    var animatedDiv2 = document.createElement('canvas');
-    animatedDiv2.id = "myDiv0_2";
-    animatedDiv2.className = 'quad';
-    animatedDiv2.width = layer_size;
-    animatedDiv2.height = layer_size;
-    animatedDiv2.style.width = layer_size + 'px';
-    animatedDiv2.style.height = layer_size + 'px';
-    animatedDiv2.style.position = "absolute";
-    animatedDiv2.style.left = animatedDiv.offsetLeft + "px";
-    animatedDiv2.style.top = animatedDiv.offsetTop + "px";
-    animatedDiv2.style.margin = "0";
-    animatedDiv2.style.zIndex = "1";
-
-    var ctx2 = animatedDiv2.getContext('2d');
-    ctx2.fillStyle = "hsl(" + hue + ", 70%, 40%)";
-    ctx2.fillRect(0, 0, layer_size, layer_size);
-    ctx2.font = "bold 24px Georgia";
-    ctx2.textAlign = "center";
-    ctx2.textBaseline = "middle";
-    ctx2.fillStyle = "black";
-    ctx2.fillText("1", layer_size / 2, layer_size / 2);
-    document.getElementById('body').appendChild(animatedDiv2);
-
-    var showFirst = true;
+    var radius = 40;
+    var increment = 1;
     function animate() {
-      if (showFirst) {
-        animatedDiv.style.zIndex = "2";
-        animatedDiv2.style.zIndex = "1";
-      } else {
-        animatedDiv.style.zIndex = "1";
-        animatedDiv2.style.zIndex = "2";
+      if (radius == 10) {
+        increment = 1
+      } else if (radius == 80) {
+        increment = -1;
       }
-      showFirst = !showFirst;
+      radius += increment;
+      animatedDiv.style.borderRadius = radius + "px";
       requestAnimationFrame(animate);
     }
     requestAnimationFrame(animate);
