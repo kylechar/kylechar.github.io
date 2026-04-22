@@ -90,17 +90,23 @@ function init() {
       paddingDiv.style.height = (window.innerHeight * 2) + 'px';
     }
 
-    var div = body.appendChild(document.createElement('div'));
-    div.id = 'myDiv' + i;
-    div.className = 'quad';
-    div.style.width = layer_size + 'px';
-    div.style.height = layer_size + 'px';
+    var canvas = body.appendChild(document.createElement('canvas'));
+    canvas.id = 'myDiv' + i;
+    canvas.className = 'quad';
+    canvas.width = layer_size;
+    canvas.height = layer_size;
+    canvas.style.width = layer_size + 'px';
+    canvas.style.height = layer_size + 'px';
 
-    // Assign a random pastel background color
-    div.style.backgroundColor = "hsl(" + hue + ", 70%, 80%)";
+    var ctx = canvas.getContext('2d');
+    ctx.fillStyle = "hsl(" + hue + ", 70%, 80%)";
+    ctx.fillRect(0, 0, layer_size, layer_size);
 
-    var number = div.appendChild(document.createElement('p'));
-    number.textContent = i + 1;
+    ctx.font = "bold 24px Georgia";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillStyle = "black";
+    ctx.fillText(i + 1, layer_size / 2, layer_size / 2);
   }
 
   var animatedDiv = document.getElementById("myDiv0");
@@ -110,14 +116,27 @@ function init() {
     animatedDiv.style.position = "relative";
     animatedDiv.style.zIndex = "1";
 
-    var animatedDiv2 = animatedDiv.cloneNode(true);
+    var animatedDiv2 = document.createElement('canvas');
     animatedDiv2.id = "myDiv0_2";
+    animatedDiv2.className = 'quad';
+    animatedDiv2.width = layer_size;
+    animatedDiv2.height = layer_size;
+    animatedDiv2.style.width = layer_size + 'px';
+    animatedDiv2.style.height = layer_size + 'px';
     animatedDiv2.style.position = "absolute";
     animatedDiv2.style.left = animatedDiv.offsetLeft + "px";
     animatedDiv2.style.top = animatedDiv.offsetTop + "px";
     animatedDiv2.style.margin = "0";
-    animatedDiv2.style.backgroundColor = "hsl(" + hue + ", 70%, 60%)";
     animatedDiv2.style.zIndex = "1";
+
+    var ctx2 = animatedDiv2.getContext('2d');
+    ctx2.fillStyle = "hsl(" + hue + ", 70%, 40%)";
+    ctx2.fillRect(0, 0, layer_size, layer_size);
+    ctx2.font = "bold 24px Georgia";
+    ctx2.textAlign = "center";
+    ctx2.textBaseline = "middle";
+    ctx2.fillStyle = "black";
+    ctx2.fillText("1", layer_size / 2, layer_size / 2);
     document.getElementById('body').appendChild(animatedDiv2);
 
     var showFirst = true;
