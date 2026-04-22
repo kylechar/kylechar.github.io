@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<!--
+Copyright 2026 The Chromium Authors
+Use of this source code is governed by a BSD-style license that can be
+found in the LICENSE file.
+-->
+<html>
+<head>
+<meta name="viewport" content="width=device-width, minimum-scale=1.0">
+
+<style>
+body {
+  margin: 0;
+  padding: 10px;
+  background-color: #f5f5f5;
+}
+
+.quad {
+  float: left;
+  background: blue;
+
+  /* Set default opacity for all divs */
+  opacity: 1.0;
+
+  /* Divs are 200px wide. A negative margin of -170px means
+    the next div will start 30px away from the left/top edge,
+    creating the exact 30px overlapping spacing you requested.
+  */
+  margin-right: -170px;
+  margin-bottom: -170px;
+
+  /* Added a subtle border so you can visually see the overlaps */
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 30px;
+  box-sizing: border-box;
+
+  will-change: transform;
+}
+
+.quad > p {
+  font-family: 'Georgia', serif;
+  font-size: 24px; /* Increased font size for the larger 200px boxes */
+  font-weight: bold;
+  text-align: center;
+  color: black;
+  margin-top: 85px; /* Roughly center the text vertically */
+}
+
+.padding_quad {
+  float: left;
+  margin: 2px;
+}
+
+</style>
+</head>
+<!-- Left the bench.js script reference intact per your baseline -->
+<script type="text/javascript" src="bench.js"></script>
+<script type="text/javascript">
+
+var qs = (function(a) {
+  if (a == "") return {};
+  var b = {};
+  for (var i = 0; i < a.length; ++i)
+  {
+    var p=a[i].split('=', 2);
+    if (p.length == 1)
+      b[p[0]] = "";
+    else
+      b[p[0]] = decodeURIComponent(p[1].replace(/\+/g, " "));
+  }
+  return b;
+})(window.location.search.substr(1).split('&'));
+
+function init() {
+  var body = document.getElementById('body');
+
+  // Set div size to 200px by 200px
+  var layer_size = 200;
+
+  // Provide a default layer count of 1 if the query string is empty
+  var layer_count = qs['layer_count'] ? parseInt(qs['layer_count']) : 1;
+  var visible_layers = qs['visible_layers'] ? parseInt(qs['visible_layers']) : -1;
+
+  for (var i = 0; i < layer_count; i ++) {
+    var hue = Math.floor(Math.random() * 360);
+    if (i == visible_layers) {
+      var paddingDiv = body.appendChild(document.createElement('div'));
+      paddingDiv.className = 'padding_quad';
+      paddingDiv.style.width = '100%';
+      paddingDiv.style.height = (window.innerHeight * 2) + 'px';
+    }
+
+    var div = body.appendChild(document.createElement('div'));
+    div.id = 'myDiv' + i;
+    div.className = 'quad';
+    div.style.width = layer_size + 'px';
+    div.style.height = layer_size + 'px';
+
+    // Assign a random pastel background color
+    div.style.backgroundColor = "hsl(" + hue + ", 70%, 80%)";
+
+    var number = div.appendChild(document.createElement('p'));
+    number.textContent = i + 1;
+  }
+
+  var animatedDiv = document.getElementById("myDiv0");
+  if (animatedDiv) {
+    // Bring the animated div to the front. Otherwise, due to the overlapping
+    // nature of the grid, it gets completely buried by div #2, #3, etc.
+    animatedDiv.style.position = "relative";
+    animatedDiv.style.zIndex = "1";
+
+    var animatedDiv2 = animatedDiv.cloneNode(true);
+    animatedDiv2.id = "myDiv0_2";
+    animatedDiv2.style.position = "absolute";
+    animatedDiv2.style.left = animatedDiv.offsetLeft + "px";
+    animatedDiv2.style.top = animatedDiv.offsetTop + "px";
+    animatedDiv2.style.margin = "0";
+    animatedDiv2.style.backgroundColor = "hsl(" + hue + ", 70%, 60%)";
+    animatedDiv2.style.zIndex = "1";
+    document.getElementById('body').appendChild(animatedDiv2);
+
+    var showFirst = true;
+    function animate() {
+      if (showFirst) {
+        animatedDiv.style.zIndex = "2";
+        animatedDiv2.style.zIndex = "1";
+      } else {
+        animatedDiv.style.zIndex = "1";
+        animatedDiv2.style.zIndex = "2";
+      }
+      showFirst = !showFirst;
+      requestAnimationFrame(animate);
+    }
+    requestAnimationFrame(animate);
+  }
+}
+
+// call init once the document is fully loaded
+window.addEventListener('load', init, false);
+
+</script>
+<body id="body"></body>
+</html>
