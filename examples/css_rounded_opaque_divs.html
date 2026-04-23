@@ -31,7 +31,7 @@ body {
 
   /* Added a subtle border so you can visually see the overlaps */
   border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 30px;
+  border-radius: 45%;
   box-sizing: border-box;
 
   will-change: transform;
@@ -116,16 +116,16 @@ function init() {
     animatedDiv.style.position = "relative";
     animatedDiv.style.zIndex = "1";
 
-    var radius = 40;
+    var radius = 45;
     var increment = 1;
     function animate() {
-      if (radius == 10) {
+      if (radius == 45) {
         increment = 1
-      } else if (radius == 80) {
+      } else if (radius == 50) {
         increment = -1;
       }
       radius += increment;
-      animatedDiv.style.borderRadius = radius + "px";
+      animatedDiv.style.borderRadius = radius + "%";
       requestAnimationFrame(animate);
     }
     requestAnimationFrame(animate);
