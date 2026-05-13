@@ -125,7 +125,7 @@ function init() {
     animatedDiv2.style.zIndex = "1";
 
     var ctx = animatedDiv2.getContext('2d');
-    ctx.fillStyle = "hsl(" + hue + ", 70%, 20%)";
+    ctx.fillStyle = "hsl(" + hue + ", 70%, 60%)";
     ctx.fillRect(0, 0, layer_size, layer_size);
 
     ctx.font = "bold 24px Georgia";
@@ -140,14 +140,10 @@ function init() {
     function animate() {
       if (showFirst) {
         animatedDiv.style.zIndex = "2";
-        animatedDiv.style.opacity = 1.0;
         animatedDiv2.style.zIndex = "1";
-        animatedDiv2.style.opacity = 0.0;
       } else {
         animatedDiv.style.zIndex = "1";
-        animatedDiv.style.opacity = 0.0;
         animatedDiv2.style.zIndex = "2";
-        animatedDiv2.style.opacity = 1.0;
       }
       showFirst = !showFirst;
       requestAnimationFrame(animate);
