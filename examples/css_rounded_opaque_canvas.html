@@ -120,9 +120,9 @@ function init() {
     var showFirst = true;
     function animate() {
       if (showFirst) {
-        animatedDiv.style.width = "190px";
+        animatedDiv.style.borderRadius = "48%"
       } else {
-        animatedDiv.style.width = "200px";
+        animatedDiv.style.borderRadius = "45%"
       }
       showFirst = !showFirst;
       requestAnimationFrame(animate);
