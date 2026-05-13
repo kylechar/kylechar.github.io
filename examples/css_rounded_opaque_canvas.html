@@ -117,12 +117,37 @@ function init() {
     animatedDiv.style.position = "relative";
     animatedDiv.style.zIndex = "1";
 
+    var animatedDiv2 = animatedDiv.cloneNode(true);
+    animatedDiv2.id = "myDiv0_2";
+    animatedDiv2.style.position = "absolute";
+    animatedDiv2.style.left = animatedDiv.offsetLeft + "px";
+    animatedDiv2.style.top = animatedDiv.offsetTop + "px";
+    animatedDiv2.style.zIndex = "1";
+
+    var ctx = animatedDiv2.getContext('2d');
+    ctx.fillStyle = "hsl(" + hue + ", 70%, 20%)";
+    ctx.fillRect(0, 0, layer_size, layer_size);
+
+    ctx.font = "bold 24px Georgia";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillStyle = "black";
+    ctx.fillText(i + 1, layer_size / 2, layer_size / 2);
+
+    document.getElementById('body').appendChild(animatedDiv2);
+
     var showFirst = true;
     function animate() {
       if (showFirst) {
-        animatedDiv.style.borderRadius = "48%"
+        animatedDiv.style.zIndex = "2";
+        animatedDiv.style.opacity = 1.0;
+        animatedDiv2.style.zIndex = "1";
+        animatedDiv2.style.opacity = 0.0;
       } else {
-        animatedDiv.style.borderRadius = "45%"
+        animatedDiv.style.zIndex = "1";
+        animatedDiv.style.opacity = 0.0;
+        animatedDiv2.style.zIndex = "2";
+        animatedDiv2.style.opacity = 1.0;
       }
       showFirst = !showFirst;
       requestAnimationFrame(animate);
