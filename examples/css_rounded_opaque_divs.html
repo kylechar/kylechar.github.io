@@ -34,7 +34,9 @@ body {
   border-radius: 45%;
   box-sizing: border-box;
 
-  will-change: transform;
+  will-change: border-radius;
+  overflow: hidden;
+  transform: translateZ(0);
 }
 
 .quad > p {
@@ -90,23 +92,17 @@ function init() {
       paddingDiv.style.height = (window.innerHeight * 2) + 'px';
     }
 
-    var canvas = body.appendChild(document.createElement('canvas'));
-    canvas.id = 'myDiv' + i;
-    canvas.className = 'quad';
-    canvas.width = layer_size;
-    canvas.height = layer_size;
-    canvas.style.width = layer_size + 'px';
-    canvas.style.height = layer_size + 'px';
+    var div = body.appendChild(document.createElement('div'));
+    div.id = 'myDiv' + i;
+    div.className = 'quad';
+    div.style.width = layer_size + 'px';
+    div.style.height = layer_size + 'px';
 
-    var ctx = canvas.getContext('2d');
-    ctx.fillStyle = "hsl(" + hue + ", 70%, 80%)";
-    ctx.fillRect(0, 0, layer_size, layer_size);
+    // Assign a random pastel background color
+    div.style.backgroundColor = "hsl(" + hue + ", 70%, 80%)";
 
-    ctx.font = "bold 24px Georgia";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.fillStyle = "black";
-    ctx.fillText(i + 1, layer_size / 2, layer_size / 2);
+    var number = div.appendChild(document.createElement('p'));
+    number.textContent = i + 1;
   }
 
   var animatedDiv = document.getElementById("myDiv0");
@@ -116,16 +112,26 @@ function init() {
     animatedDiv.style.position = "relative";
     animatedDiv.style.zIndex = "1";
 
-    var radius = 45;
-    var increment = 1;
+    var animatedDiv2 = animatedDiv.cloneNode(true);
+    animatedDiv2.id = "myDiv0_2";
+    animatedDiv2.style.position = "absolute";
+    animatedDiv2.style.left = animatedDiv.offsetLeft + "px";
+    animatedDiv2.style.top = animatedDiv.offsetTop + "px";
+    animatedDiv2.style.margin = "0";
+    animatedDiv2.style.backgroundColor = "hsl(" + hue + ", 70%, 60%)";
+    animatedDiv2.style.zIndex = "1";
+    document.getElementById('body').appendChild(animatedDiv2);
+
+    var showFirst = true;
     function animate() {
-      if (radius == 45) {
-        increment = 1
-      } else if (radius == 50) {
-        increment = -1;
+      if (showFirst) {
+        animatedDiv.style.zIndex = "2";
+        animatedDiv2.style.zIndex = "1";
+      } else {
+        animatedDiv.style.zIndex = "1";
+        animatedDiv2.style.zIndex = "2";
       }
-      radius += increment;
-      animatedDiv.style.borderRadius = radius + "%";
+      showFirst = !showFirst;
       requestAnimationFrame(animate);
     }
     requestAnimationFrame(animate);
